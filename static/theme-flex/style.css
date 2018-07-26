@@ -26,6 +26,18 @@
   font-family: 'RobotoMono';
   font-weight: 500;
   src: local("Roboto Mono Medium"), local("RobotoMono-Medium"), url("../fonts/RobotoMono-Medium.ttf") format("truetype"); }
+@font-face {
+  font-family: 'Abel';
+  font-weight: 400;
+  src: local("Abel Regular"), local("Abel-Regular"), url("../fonts/Abel-Regular.ttf") format("truetype"); }
+@font-face {
+  font-family: 'Antic';
+  font-weight: 400;
+  src: local("Antic Regular"), local("Antic-Regular"), url("../fonts/Antic-Regular.ttf") format("truetype"); }
+@font-face {
+  font-family: 'AnticSlab';
+  font-weight: 400;
+  src: local("AnticSlab Regular"), local("AnticSlab-Regular"), url("../fonts/AnticSlab-Regular.ttf") format("truetype"); }
 header {
   -webkit-box-align: center;
   -ms-flex-align: center;
