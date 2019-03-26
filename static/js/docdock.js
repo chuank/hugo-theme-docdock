@@ -99,6 +99,7 @@ function fallbackMessage(action) {
 }
 
 jQuery(document).ready(function() {
+<<<<<<< HEAD
 	jQuery("#sidebar .category-icon").on("click", function() {
 		$( this ).toggleClass("fa-angle-down fa-angle-right") ;
 		$( this ).parent().parent().children("ul").toggle() ;
@@ -216,6 +217,128 @@ jQuery(document).ready(function() {
 
 	$("#top-bar a:not(:has(img)):not(.btn)").addClass("highlight");
 	$("article a:not(:has(img)):not(.btn)").addClass("highlight");
+=======
+
+    baseurl = baseurl.endsWith('/')?baseurl:baseurl+'/';
+
+    jQuery('#sidebar .category-icon').on('click', function() {
+        $( this ).toggleClass("fa-angle-down fa-angle-right") ;
+        $( this ).parent().parent().children('ul').toggle() ;
+        return false;
+    });
+
+
+    jQuery('[data-clear-history-toggle]').on('click', function() {
+        sessionStorage.clear();
+        location.reload();
+        return false;
+    });
+
+    var ajax;
+    jQuery('[data-search-input]').on('input', function() {
+        var input = jQuery(this),
+            value = input.val(),
+            items = jQuery('[data-nav-id]');
+        items.removeClass('search-match');
+        if (!value.length) {
+            $('ul.topics').removeClass('searched');
+            items.css('display', 'block');
+            sessionStorage.removeItem('search-value');
+            $(".highlightable").unhighlight({ element: 'mark' })
+            return;
+        }
+
+        sessionStorage.setItem('search-value', value);
+        $(".highlightable").unhighlight({ element: 'mark' }).highlight(value, { element: 'mark' });
+
+        if (ajax && ajax.abort) ajax.abort();
+
+        jQuery('[data-search-clear]').on('click', function() {
+            jQuery('[data-search-input]').val('').trigger('input');
+            sessionStorage.removeItem('search-input');
+            $(".highlightable").unhighlight({ element: 'mark' })
+        });
+    });
+
+    $.expr[":"].contains = $.expr.createPseudo(function(arg) {
+        return function( elem ) {
+            return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+        };
+    });
+
+    if (sessionStorage.getItem('search-value')) {
+        var searchValue = sessionStorage.getItem('search-value')
+        sessionStorage.removeItem('search-value');
+        var searchedElem = $('article').find(':contains(' + searchValue + ')').get(0);
+        searchedElem && searchedElem.scrollIntoView();
+        $(".highlightable").highlight(searchValue, { element: 'mark' });
+    }
+
+    // clipboard
+    var clipInit = false;
+    $('code').each(function() {
+        var code = $(this),
+            text = code.text();
+
+        if (text.length > 5) {
+            if (!clipInit) {
+                var text, clip = new Clipboard('.copy-to-clipboard', {
+                    text: function(trigger) {
+                        text = $(trigger).prev('code').text();
+                        return text.replace(/^\$\s/gm, '');
+                    }
+                });
+
+                var inPre;
+                clip.on('success', function(e) {
+                    e.clearSelection();
+                    inPre = $(e.trigger).parent().prop('tagName') == 'PRE';
+                    $(e.trigger).attr('aria-label', 'Copied to clipboard!').addClass('tooltipped tooltipped-' + (inPre ? 'w' : 's'));
+                });
+
+                clip.on('error', function(e) {
+                    inPre = $(e.trigger).parent().prop('tagName') == 'PRE';
+                    $(e.trigger).attr('aria-label', fallbackMessage(e.action)).addClass('tooltipped tooltipped-' + (inPre ? 'w' : 's'));
+                    $(document).one('copy', function(){
+                        $(e.trigger).attr('aria-label', 'Copied to clipboard!').addClass('tooltipped tooltipped-' + (inPre ? 'w' : 's'));
+                    });
+                });
+
+                clipInit = true;
+            }
+
+            code.after('<span class="copy-to-clipboard" title="Copy to clipboard"><object class="clippy-icon" type="image/svg+xml" data="' + baseurl + 'images/clippy.svg"/></span>');
+            code.next('.copy-to-clipboard').on('mouseleave', function() {
+                $(this).attr('aria-label', null).removeClass('tooltipped tooltipped-s tooltipped-w');
+            });
+        }
+    });
+
+    // allow keyboard control for prev/next links
+    jQuery(function() {
+        jQuery('.nav-prev').click(function(){
+            location.href = jQuery(this).attr('href');
+        });
+        jQuery('.nav-next').click(function() {
+            location.href = jQuery(this).attr('href');
+        });
+    });
+
+    jQuery(document).keydown(function(e) {
+      // prev links - left arrow key
+      if(e.which == '37') {
+        jQuery('.nav.nav-prev').click();
+      }
+
+      // next links - right arrow key
+      if(e.which == '39') {
+        jQuery('.nav.nav-next').click();
+      }
+    });
+
+    $('#top-bar a:not(:has(img)):not(.btn)').addClass('highlight');
+    $('article a:not(:has(img)):not(.btn)').addClass('highlight');
+>>>>>>> 1d12f5733354d9bd4e19e439f068bdc3cfdabe4f
 });
 
 jQuery(window).on("load", function() {
