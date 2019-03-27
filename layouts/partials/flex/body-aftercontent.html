@@ -28,32 +28,19 @@
     </div>
     {{end}}
 
-<<<<<<< HEAD
-		{{ if .Site.Params.showImprove }}
-=======
     {{ if .Site.Params.editURL }}
->>>>>>> 1d12f5733354d9bd4e19e439f068bdc3cfdabe4f
     <div class="github-link">
       <a href="{{ .Site.Params.editURL }}{{ replace .File.Dir "\\" "/" }}{{ .File.LogicalName }}" target="blank"><i class="fas fa-code-branch"></i>
         {{T "Edit-this-page"}}</a>
     </div>
-<<<<<<< HEAD
-		{{end}}
-=======
     {{end}}
->>>>>>> 1d12f5733354d9bd4e19e439f068bdc3cfdabe4f
   </div>
 
 
 	<div>
 {{ $footer := print "_footer." .Lang }}
-<<<<<<< HEAD
-{{ range where .Site.Pages "Source.BaseFileName" $footer }}
-  {{ .Content }}
-=======
 {{ range where .Site.Pages "File.BaseFileName" $footer }}
-  {{ .Content }} 
->>>>>>> 1d12f5733354d9bd4e19e439f068bdc3cfdabe4f
+  {{ .Content }}
 {{else}}
   {{ if .Site.GetPage "page" "_footer.md" }}
     {{(.Site.GetPage "page" "_footer.md").Content}}
